@@ -1,0 +1,64 @@
+=default_banner($banner-height)
+  &.banner
+    position: relative
+    height: $banner-height
+  .banner__under-bg
+    +stretch_inside(0)
+    +background_overlay(0.55)
+    position: absolute
+    background-size: cover
+    background-repeat: no-repeat
+    background-position: 50% 50%
+  .banner__content
+    +flex_center()
+    flex-direction: column
+    height: $banner-height
+    color: white
+
+.banner__homepage__top
+  +default_banner($banner-height)
+
+  .banner__content__title
+    +comfortaa()
+    width: 100%
+    font-size: map_get($font-sizes,'title')
+    text-align: center
+    padding-bottom: $gutter * 2
+
+  .banner__content__cta
+    +muli()
+    width: 100%
+    font-size: map_get($font-sizes,'default')
+
+  .beer_search_form
+    width: 100%
+
+  .input-group
+    padding-bottom: $gutter * .5
+
+  .input-group--secondary
+    +flex_row(false)
+    padding-top: $gutter * .5
+    width: auto
+    [class^="select__wrapper"]
+      +flex_grid(1/3)
+
+  .form-control
+    height: 50px
+
+  select.form-control:not([size]):not([multiple])
+    +f-weight("light")
+    +color("pale_sky")
+    flex-direction: row
+    width: 100%
+    min-width: 150px
+    height: 50px
+    margin-right: 0
+
+  .beer_search_form__submit
+    +bg-color("indian_ale")
+    height: 100%
+    width: 100%
+    color: white
+    border: none
+

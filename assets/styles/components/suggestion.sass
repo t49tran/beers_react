@@ -1,0 +1,23 @@
+.suggestion__wrapper
+  position: relative
+  .beersSuggestionList
+    position: absolute
+    z-index: 99
+    background-color: white
+    +color("pale_sky")
+    width: 100%
+    top: 55px
+    padding: 20px
+    border: 3px solid #fff79a
+    border-radius: 5px
+    &.hide
+      display: none
+    max-height: 250px
+    overflow: auto
+  .beerSuggestionEntry
+    @include padding-gutter(('top','bottom','left'), .5)
+    box-shadow: 0px 1px 0px 0px rgba(0,0,0,.15)
+    &:hover
+      background-color: #ccc
+      color: white
+      cursor: pointer

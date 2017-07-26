@@ -1,0 +1,53 @@
+// Common mixins
+=stretch_inside($padding)
+  top: $padding * 1px
+  bottom: $padding * 1px
+  left: $padding * 1px
+  right: $padding * 1px
+
+=padding_gutter($directions,$multiplier)
+  @each $direction in $directions
+    padding-#{$direction}: $gutter * $multiplier
+
+=margin_gutter($directions, $multiplier:1)
+  @each $direction in $directions
+    margin-#{$direction}: $gutter * $multiplier
+
+// Font mixins
+=comfortaa()
+  font-family: 'Comfortaa', cursive
+
+=muli()
+  font-family: 'Muli', sans-serif
+
+=background_overlay($opacity : 1)
+  &:before
+    +stretch_inside(0)
+    content: ""
+    position: absolute
+    background: linear-gradient(to top, rgba(0,0,0,$opacity), transparent)
+
+=f-weight($weight)
+  font-weight: map_get($font-weight,$weight)
+
+=color($color)
+  color: map_get($colors,$color)
+
+=bg-color($color)
+  background-color: map_get($colors,$color)
+
+// Flex mixins
+=flex_center()
+  display: flex
+  align-items: center
+  justify-content: center
+
+=flex_row($aligned:true)
+  display: flex
+  @if $aligned != true
+    +margin_gutter(('left','right'),-.5)
+
+=flex_grid($column-width)
+  flex: 1 1 percentage($column-width)
+  box-sizing: border-box
+  +padding_gutter(('left','right'),.5)
