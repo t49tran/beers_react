@@ -45,7 +45,7 @@ gulp.task 'sass', ()->
   .pipe browserSync.stream()
 
 gulp.task 'lint', ()->
-  gulp.src((['assets/js/**/*.js']))
+  gulp.src((['assets/js/**/*.js', 'assets/js/**/*.jsx']))
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());

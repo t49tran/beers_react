@@ -37,7 +37,7 @@ const PartialBorderBox = styled.div`
     &:before {
       height: 25%;
     }
-  
+
   }
 `;
 

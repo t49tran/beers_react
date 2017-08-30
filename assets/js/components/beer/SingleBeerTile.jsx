@@ -6,17 +6,23 @@ import PartialBorderButton from '../based_style_components/PartialBorderButton';
 import ScrollTo from '../../services/ScrollTo';
 
 class SingleBeerTile extends React.Component {
-  handleQuoteClick = () => {
-    const element = document.getElementById("quoteForm");
-    if (element === undefined || element.getBoundingClientRect() === undefined) return;
-
-    ScrollTo(element.getBoundingClientRect().top);
-  };
+  static get propTypes() {
+    return {
+      beer: React.PropTypes.object.isRequired,
+    };
+  }
 
   render() {
+    const handleQuoteClick = () => {
+      const element = document.getElementById('quoteForm');
+      if (element === undefined || element.getBoundingClientRect() === undefined) return;
+
+      ScrollTo(element.getBoundingClientRect().top);
+    };
+
     const { beer } = this.props;
 
-    const BeerTile__Right = styled.div`
+    const BeerTileRight = styled.div`
       display: flex;
       align-items: center;
       background-image: url('http://lorempixel.com/450/600/food/');
@@ -40,11 +46,11 @@ class SingleBeerTile extends React.Component {
             <PaddedTile>
               <h1 className="beer__tile__heading">{beer.name}</h1>
               <p className="beer__tile__content">{beer.description}</p>
-              <PartialBorderButton onClick={this.handleQuoteClick}>Ask for a quote</PartialBorderButton>
+              <PartialBorderButton onClick={handleQuoteClick}>Ask for a quote</PartialBorderButton>
             </PaddedTile>
           </div>
           <div className="col col-sm-7">
-            <BeerTile__Right></BeerTile__Right>
+            <BeerTileRight />
           </div>
         </div>
       </div>

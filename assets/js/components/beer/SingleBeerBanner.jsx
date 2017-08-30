@@ -3,18 +3,20 @@ import BubbleBackground from './BubbleBackground';
 import SingleBeerTile from './SingleBeerTile';
 import RelatedBeers from './RelatedBeers';
 
-class SingleBeerBanner extends React.Component {
-  render() {
-    const { beer } = this.props;
+const SingleBeerBanner = function SingleBeerBanner(props) {
+  const { beer } = props;
 
-    return (
-      <div className="beer__banner">
-        <BubbleBackground />
-        <SingleBeerTile beer={beer}></SingleBeerTile>
-        <RelatedBeers beer={beer}></RelatedBeers>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="beer__banner">
+      <BubbleBackground />
+      <SingleBeerTile beer={beer} />
+      <RelatedBeers beer={beer} />
+    </div>
+  );
+};
+
+SingleBeerBanner.propTypes = {
+  beer: React.PropTypes.object.isRequired,
+};
 
 export default SingleBeerBanner;

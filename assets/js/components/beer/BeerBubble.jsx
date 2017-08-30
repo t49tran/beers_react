@@ -2,16 +2,30 @@ import React from 'react';
 import ReactFauxDOM from 'react-faux-dom';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { registerBubble } from '../../actions/bubbles';
 
 class BeerBubble extends React.Component {
-  static defaultProps = {
-    speed: _.random(5, 25), // set speed equal to
-  };
+  static get propTypes() {
+    return {
+      x: React.PropTypes.number,
+      y: React.PropTypes.number,
+      speed: React.PropTypes.number,
+      visible: React.PropTypes.bool,
+      radius: React.PropTypes.number.isRequired,
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      speed: _.random(5, 25), // set speed equal to
+      x: 0,
+      y: 0,
+      visible: true,
+    };
+  }
 
   constructor(props) {
     super(props);
-    const {x = 0, y = 0} = props;
+    const { x = 0, y = 0 } = props;
 
     this.state = { x, y };
   }
@@ -22,24 +36,25 @@ class BeerBubble extends React.Component {
     }, 500);
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
   componentDidUpdate() {
     const { visible } = this.props;
     if (!visible) clearInterval(this.timer);
   }
 
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
   move() {
-    const {speed} = this.props;
-    const {x, y} = this.state;
+    const { speed } = this.props;
+    const { x, y } = this.state;
 
     const vectorSine = _.random(0.1, 0.9);
-    const vectorDirection = Math.round(Math.random()) * 2 - 1; // get 1 or -1
+    const vectorDirection = (Math.round(Math.random()) * 2) - 1; // get 1 or -1
 
-    const xNext = x + (vectorSine * speed) * vectorDirection;
-    const yNext = y + Math.sqrt(speed * speed - (vectorSine * speed) * (vectorSine * speed)) * vectorDirection;
+    const xNext = (x + (vectorSine * speed)) * vectorDirection;
+    const yNext = ((y + Math.sqrt((speed ** 2) - (vectorSine * speed))) *
+      (vectorSine * speed)) * vectorDirection;
 
     this.setState({
       x: xNext,

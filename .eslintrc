@@ -6,6 +6,7 @@
     //overriding the default list
     //0 = no error; 1 = warning; 2 = error
     //console = warning
+    "react/forbid-prop-types": [1, { "forbid": ["any"] }],
     "no-console": 1,
     "no-unused-vars": 1,
     "no-mixed-spaces-and-tabs": 1,

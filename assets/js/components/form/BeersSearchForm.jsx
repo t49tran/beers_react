@@ -1,54 +1,111 @@
 import React from 'react';
-import CountrySelect from './CountrySelect';
-import CategorySelect from './CategorySelect';
-import StyleSelect from './StyleSelect';
-import BeersSuggestionInput from './BeersSuggestionInput';
-import { InputGroup, Input, Button, Row, Col } from 'reactstrap';
+import { InputGroup, Button, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
+
+import SearchTypeSelect from './SearchTypeSelect';
+import CountriesSelector from '../CountriesSelector';
+import CategoriesSelector from '../CategoriesSelector';
+import BeersSuggestionInput from './BeersSuggestionInput';
 import { searchBeersIfNeeded } from '../../actions/beers';
+import { DEFAULT_SEARCH_TYPE } from '../../config';
 
 class BeersSearchForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      key: '',
-      cat: '',
-      style: '',
-      country: '',
+  static get propTypes() {
+    return {
+      keyword: React.PropTypes.string,
+      selectedSearchType: React.PropTypes.object,
+      selectedStyle: React.PropTypes.object,
+      selectedCountry: React.PropTypes.object,
+      selectedCategory: React.PropTypes.object,
+      searchBeers: React.PropTypes.func.isRequired,
     };
-    this.searchFieldUpdate = this.searchFieldUpdate.bind(this);
-    this.search = this.search.bind(this);
   }
 
-  searchFieldUpdate(field, value) {
-    this.setState({[field]:value});
+  static get defaultProps() {
+    return {
+      selectedSearchType: DEFAULT_SEARCH_TYPE,
+      selectedStyle: {},
+      selectedCategory: {},
+      selectedCountry: {},
+      keyword: '',
+    };
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.search = this.search.bind(this);
   }
 
   search() {
     const { dispatch } = this.props;
+    const {
+      selectedCountry,
+      selectedCategory,
+      selectedStyle,
+      keyword,
+      selectedSearchType,
+     } = this.props;
 
-    dispatch(searchBeersIfNeeded(this.state));
+    this.props.searchBeers({
+      selectedCountry,
+      selectedCategory,
+      selectedStyle,
+      keyword,
+      selectedSearchType,
+    });
   }
 
   render() {
+    const searchTypes = [
+      {name: 'Beers', value: 'beers'},
+      {name: 'Breweries', value: 'breweries'},
+    ];
+
+    const { selectedSearchType } = this.props;
+
+    const isBeerSearch = (selectedSearchType === 'beers');
+
     return (
-       <div className="beer_search_form">
-           <Row className="input-group--primary">
-             <Col sm={{ size: 10 }}>
-               <BeersSuggestionInput beerChange={this.searchFieldUpdate} />
-             </Col>
-             <Col sm={{ size: 2 }}>
-               <Button onClick={this.search} className="beer_search_form__submit">Let's go</Button>
-             </Col>
-           </Row>
-           <InputGroup className="input-group--secondary">
-               <CountrySelect countryChange={this.searchFieldUpdate} />
-               <CategorySelect categoryChange={this.searchFieldUpdate} />
-               <StyleSelect styleChange={this.searchFieldUpdate} />
-           </InputGroup>
-       </div>
+      <div className="beer_search_form">
+        <div className="input-group--primary">
+          <SearchTypeSelect searchTypes={searchTypes} />
+          <BeersSuggestionInput className="search__wrapper search__wrapper__suggestion" />
+          <div className="search__wrapper__submit">
+            <Button onClick={this.search} className="beer_search_form__submit"> Let&apos;s go </Button>
+          </div>
+        </div>
+        <InputGroup className="input-group--secondary">
+          <CountriesSelector className="select__transparent select__country form-control" />
+          <CategoriesSelector className="select__transparent select__category form-control" />
+        </InputGroup>
+      </div>
     );
   }
 }
 
-export default connect()(BeersSearchForm);
+const mapStateToProps = (state) => {
+  const { searchFormOptions } = state;
+
+  const {
+    selectedSearchType,
+    selectedCountry,
+    selectedCategory,
+    selectedStyle,
+    keyword,
+  } = searchFormOptions || {};
+
+  return {
+    selectedSearchType,
+    selectedCountry,
+    selectedCategory,
+    selectedStyle,
+    keyword,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  searchBeers: (searchCriterias) => {dispatch(searchBeersIfNeeded(searchCriterias))},
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BeersSearchForm);

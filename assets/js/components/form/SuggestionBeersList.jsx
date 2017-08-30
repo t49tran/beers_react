@@ -1,26 +1,45 @@
 import React from 'react';
 
-export default class SuggestionBeersList extends React.Component{
-    constructor(props) {
-        super(props);
-    }
+class SuggestionBeersList extends React.Component {
+  static get propTypes() {
+    return {
+      beers: React.PropTypes.array,
+      display: React.PropTypes.bool,
+      beerSelect: React.PropTypes.func.isRequired,
+    };
+  }
 
-    static get propTypes() {
-        return {
-            beers: React.PropTypes.array
-        };
-    }
+  static get defaultProps() {
+    return {
+      beers: [],
+      display: false,
+    };
+  }
 
-    render(){
-        let showClass = this.props.display ? "show" : "hide";
-        return (
-            <div className={showClass+" beersSuggestionList"}>
-                {this.props.beers.map((beer, i) =>
-                    <div onClick={() => this.props.beerSelect(beer)} className="beerSuggestionEntry" key={beer.id}>{beer.name}</div>
-                )}
-            </div>
-        );
-    }
+  render() {
+    const {
+      beerSelect,
+      display,
+    } = this.props;
+    const className = `${display ? 'show' : 'hide'} beersSuggestionList`;
+
+    return (
+      <div className={className}>
+        {this.props.beers.map(beer =>
+          (<div
+            onClick={() => beerSelect(beer)}
+            role="button"
+            tabIndex={0}
+            className="beerSuggestionEntry"
+            key={beer.id}
+          >
+            {beer.name}
+          </div>
+          ),
+        )}
+      </div>
+    );
+  }
 }
 
-
+export default SuggestionBeersList;
